@@ -40,11 +40,6 @@ public class PlayerController : MonoBehaviour
 
     public void Shoot()
     {
-
-    }
-
-    public void SwitchControlScheme(string scheme, InputDevice device)
-    {
-        _playerInput.SwitchCurrentControlScheme(scheme, device);
+        Debug.Log("shoot");
     }
 }

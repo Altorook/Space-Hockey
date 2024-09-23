@@ -7,22 +7,21 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerInputManager : MonoBehaviour
 {
+    [SerializeField] private string mapName;
+    [SerializeField] private InputActionAsset inputActionAsset;
     private PlayerController _playerController;
-    private Input _input;
 
     private void Awake()
     {
         _playerController = GetComponent<PlayerController>();
-        _input = new Input();
     }
 
-    public void OnMove(CallbackContext ctx)
+    private void OnEnable()
     {
-        _playerController.MovementInput(ctx.ReadValue<Vector2>());
-    }
+        var playerCtrl = inputActionAsset.FindActionMap(mapName);
+        playerCtrl.FindAction("Movement").performed += ctx => _playerController.MovementInput(ctx.ReadValue<Vector2>());
+        playerCtrl.FindAction("Shoot").performed += ctx => _playerController.Shoot();
 
-    public void OnShoot()
-    {
-        _playerController.Shoot();
+        playerCtrl.Enable();
     }
 }
