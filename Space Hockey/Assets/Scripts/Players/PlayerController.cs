@@ -5,7 +5,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("---Puck---")]
+    [SerializeField] private Puck puck;
+    [SerializeField] private Transform puckPos;
+
+    [Header("---Player Stat---")]
     [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] private float shootSpeed;
 
     private Rigidbody2D rb;
     private Vector2 _movement;
@@ -40,6 +46,16 @@ public class PlayerController : MonoBehaviour
 
     public void Shoot()
     {
-        Debug.Log("shoot");
+        if(puckPos.gameObject.activeSelf)
+        {
+            puckPos.gameObject.SetActive(false);
+            puck.ResetPosition(puckPos);
+            puck.gameObject.SetActive(true);
+            puck.gameObject.GetComponent<Rigidbody2D>().velocity = puckPos.up * puck.PuckRandomSpeed(5f, 10f);
+        }
+        else
+        {
+            return;
+        }
     }
 }
