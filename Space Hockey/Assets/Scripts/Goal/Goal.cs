@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class Goal : MonoBehaviour
 {
+    [SerializeField] private string playerGoal;
+
+    private GameManager gm;
+
+    private void Awake()
+    {
+        gm = GameObject.Find("[GameManager]").GetComponent<GameManager>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +22,20 @@ public class Goal : MonoBehaviour
     void Update()
     {
         
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<Puck>())
+        {
+            if(playerGoal == "Player1")
+            {
+                gm.PlayerScored(playerGoal);
+            }
+            else
+            {
+                gm.PlayerScored(playerGoal);
+            }
+        }
     }
 }

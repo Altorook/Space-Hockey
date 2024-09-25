@@ -11,16 +11,24 @@ public class PlayerController : MonoBehaviour
 
     [Header("---Player Stat---")]
     [SerializeField] private float movementSpeed = 5f;
-    [SerializeField] private float shootSpeed;
 
     private Rigidbody2D rb;
     private Vector2 _movement;
-    private PlayerInput _playerInput;
+    private bool isPuckHere;
+    private bool canShoot;
+
+    #region Puck Variables
+    private float puckSpeed;
+    private bool randomSpeed;
+    private float speed = 5;
+    private float min = 5;
+    private float max = 10;
+    private bool increase = true;
+    #endregion
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        _playerInput = GetComponent<PlayerInput>();
     }
     // Start is called before the first frame update
     void Start()
@@ -29,9 +37,10 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         MovementHandler();
+        Debug.Log(canShoot);
     }
 
     private void MovementHandler()
@@ -44,18 +53,86 @@ public class PlayerController : MonoBehaviour
         _movement = input;
     }
 
-    public void Shoot()
+    public void KeepBall()
     {
-        if(puckPos.gameObject.activeSelf)
+        if(canShoot == false)
         {
+            if (isPuckHere == true)
+            {
+                puck.gameObject.SetActive(false);
+                puckPos.gameObject.SetActive(true);
+                canShoot = true;
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        else if(canShoot == true && randomSpeed == false && puckPos.gameObject.activeSelf)
+        {
+            randomSpeed = true;
+            StartCoroutine(StartRandom());
+            speed = 5;
+        }
+        else if(canShoot == true && randomSpeed == true && puckPos.gameObject.activeSelf)
+        {
+            randomSpeed = false;
+            if (randomSpeed == false) puckSpeed = speed;
+            StopCoroutine(StartRandom());
             puckPos.gameObject.SetActive(false);
             puck.ResetPosition(puckPos);
             puck.gameObject.SetActive(true);
-            puck.gameObject.GetComponent<Rigidbody2D>().velocity = puckPos.up * puck.PuckRandomSpeed(5f, 10f);
+            puck.gameObject.GetComponent<Rigidbody2D>().velocity = puckPos.up * puckSpeed;
+            speed = 5;
+            canShoot = false;
         }
-        else
+    }
+
+    private IEnumerator StartRandom()
+    {
+        while ((randomSpeed == true))
         {
-            return;
+            if (increase)
+            {
+                speed += 1.5f;
+                if (speed >= max)
+                {
+                    speed = max;
+                    increase = false;
+                }
+            }
+            else
+            {
+                speed -= 1.5f;
+                if (speed <= min)
+                {
+                    speed = min;
+                    increase = true;
+                }
+            }
+            yield return new WaitForSeconds(0.5f);
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<Puck>())
+        {
+            isPuckHere = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.GetComponent<Puck>())
+        {
+            isPuckHere = false;
+        }
+    }
+
+    public void SetCanShoot(bool value)
+    {
+        canShoot = value;
     }
 }

@@ -20,7 +20,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         var playerCtrl = inputActionAsset.FindActionMap(mapName);
         playerCtrl.FindAction("Movement").performed += ctx => _playerController.MovementInput(ctx.ReadValue<Vector2>());
-        playerCtrl.FindAction("Shoot").performed += ctx => _playerController.Shoot();
+        playerCtrl.FindAction("KeepPuck").performed += ctx => _playerController.KeepBall();
 
         playerCtrl.Enable();
     }

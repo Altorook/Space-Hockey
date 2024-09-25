@@ -15,7 +15,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Shoot",
+                    "name": "KeepPuck",
                     "type": "Button",
                     "id": "11ed06ee-7f82-4e33-aaba-aa5abbf36e1d",
                     "expectedControlType": "Button",
@@ -87,7 +87,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Shoot",
+                    "action": "KeepPuck",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -107,7 +107,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Shoot",
+                    "name": "KeepPuck",
                     "type": "Button",
                     "id": "a46d1702-2b09-44fe-8af0-abc518660e05",
                     "expectedControlType": "Button",
@@ -179,7 +179,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Shoot",
+                    "action": "KeepPuck",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
