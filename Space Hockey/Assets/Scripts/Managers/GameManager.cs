@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -14,10 +15,26 @@ public class GameManager : MonoBehaviour
     [Header("---Score---")]
     [SerializeField] private int p1Score;
     [SerializeField] private int p2Score;
+    [SerializeField] private TMP_Text p1ScoreText;
+    [SerializeField] private TMP_Text p2ScoreText;
+    [SerializeField] private TMP_Text gameResultText;
 
     private int randomPlayer;
     private GameObject playerPuck;
     private string winResult;
+
+    private void Awake()
+    {
+        if(p2.gameObject.GetComponent<PlayerController>().GetPlayerName() == "AI")
+        {
+            Destroy(p2.gameObject.GetComponent<PlayerController>());
+            Destroy(p2.gameObject.GetComponent<PlayerInputManager>());
+        }
+        else
+        {
+            Destroy(p2.gameObject.GetComponent<AI>());
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +42,10 @@ public class GameManager : MonoBehaviour
         randomPlayer = Random.Range(1, 3);
         Debug.Log(randomPlayer);
         InitializedGame();
+
+        p1ScoreText.text = p1Score.ToString();
+        p2ScoreText.text = p1Score.ToString();
+        gameResultText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -35,6 +56,12 @@ public class GameManager : MonoBehaviour
 
     private void InitializedGame()
     {
+        if (p2.gameObject.GetComponent<AI>() != null)
+        {
+            p2.gameObject.GetComponent<AI>().SetCanShoot(false);
+            p2.gameObject.GetComponent<AI>().SetIsHit(false);
+        }
+            
         Invoke("RandomPlayer", 3);
     }
 
@@ -50,7 +77,12 @@ public class GameManager : MonoBehaviour
         {
             playerPuck = p2.transform.GetChild(0).gameObject;
             playerPuck.SetActive(true);
-            p2.gameObject.GetComponent<PlayerController>().SetCanShoot(true);
+            if(p2.gameObject.GetComponent<PlayerController>() != null) p2.gameObject.GetComponent<PlayerController>().SetCanShoot(true);
+            else
+            {
+                p2.gameObject.GetComponent<AI>().SetCanShoot(true);
+                p2.gameObject.GetComponent<AI>().SetIsHit(true);
+            }
         }
     }
 
@@ -63,6 +95,7 @@ public class GameManager : MonoBehaviour
             puck.ResetPosition(playerPuck.transform);
             Invoke("ActivePuck", 2);
             p1.gameObject.GetComponent<PlayerController>().SetCanShoot(true);
+            p1ScoreText.text = p2Score.ToString();
         }
         else
         {
@@ -70,7 +103,13 @@ public class GameManager : MonoBehaviour
             p1Score += 1;
             puck.ResetPosition(playerPuck.transform);
             Invoke("ActivePuck", 2);
-            p2.gameObject.GetComponent<PlayerController>().SetCanShoot(true);
+            if (p2.gameObject.GetComponent<PlayerController>() != null) p2.gameObject.GetComponent<PlayerController>().SetCanShoot(true);
+            else
+            {
+                p2.gameObject.GetComponent<AI>().SetCanShoot(true);
+                p2.gameObject.GetComponent<AI>().SetIsHit(true);
+            }
+            p2ScoreText.text = p1Score.ToString();
         }
         CheckWinCondition();
         if(winResult != null) EndGame();
@@ -97,7 +136,11 @@ public class GameManager : MonoBehaviour
     {
         p1.SetActive(false);
         p2.SetActive(false);
+        p1ScoreText.gameObject.SetActive(false);
+        p2ScoreText.gameObject.SetActive(false);
         GameObject.Find("Arena").SetActive(false);
+        gameResultText.text = $"{winResult} Win";
+        gameResultText.gameObject.SetActive(true);
         Debug.Log(winResult);
     }
 }
