@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -10,7 +12,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform puckPos;
 
     [Header("---Player Stat---")]
+    [SerializeField] private string playerName;
     [SerializeField] private float movementSpeed = 5f;
+    [SerializeField] private float speedIncrease;
+    [SerializeField] SpeedBar speedBar;
 
     private Rigidbody2D rb;
     private Vector2 _movement;
@@ -22,7 +27,7 @@ public class PlayerController : MonoBehaviour
     private bool randomSpeed;
     private float speed = 5;
     private float min = 5;
-    private float max = 10;
+    private float max = 15;
     private bool increase = true;
     #endregion
 
@@ -33,14 +38,13 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        speedBar.transform.GetChild(0).gameObject.SetActive(false);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
         MovementHandler();
-        Debug.Log(canShoot);
     }
 
     private void MovementHandler()
@@ -71,9 +75,10 @@ public class PlayerController : MonoBehaviour
 
         else if(canShoot == true && randomSpeed == false && puckPos.gameObject.activeSelf)
         {
+            speedBar.transform.GetChild(0).gameObject.SetActive(true);
             randomSpeed = true;
-            StartCoroutine(StartRandom());
             speed = 5;
+            StartCoroutine(StartRandom());
         }
         else if(canShoot == true && randomSpeed == true && puckPos.gameObject.activeSelf)
         {
@@ -86,6 +91,7 @@ public class PlayerController : MonoBehaviour
             puck.gameObject.GetComponent<Rigidbody2D>().velocity = puckPos.up * puckSpeed;
             speed = 5;
             canShoot = false;
+            speedBar.transform.GetChild(0).gameObject.SetActive(false);
         }
     }
 
@@ -95,7 +101,7 @@ public class PlayerController : MonoBehaviour
         {
             if (increase)
             {
-                speed += 1.5f;
+                speed += speedIncrease;
                 if (speed >= max)
                 {
                     speed = max;
@@ -104,14 +110,15 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
-                speed -= 1.5f;
+                speed -= speedIncrease;
                 if (speed <= min)
                 {
                     speed = min;
                     increase = true;
                 }
             }
-            yield return new WaitForSeconds(0.5f);
+            speedBar.UpdateSpeedBar(speed);
+            yield return new WaitForSeconds(0.01f);
         }
     }
 
@@ -134,5 +141,10 @@ public class PlayerController : MonoBehaviour
     public void SetCanShoot(bool value)
     {
         canShoot = value;
+    }
+
+    public string GetPlayerName()
+    {
+        return playerName;
     }
 }
