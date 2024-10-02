@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
             {
                 p2.gameObject.GetComponent<AI>().SetCanShoot(true);
                 p2.gameObject.GetComponent<AI>().SetIsHit(true);
+                p2.gameObject.GetComponent<AI>().SetStartCount(true);
             }
         }
     }
@@ -98,6 +99,10 @@ public class GameManager : MonoBehaviour
             Invoke("ActivePuck", 2);
             p1.gameObject.GetComponent<PlayerController>().SetCanShoot(true);
             p1ScoreText.text = p2Score.ToString();
+            if (p2.gameObject.GetComponent<AI>() != null)
+            {
+                p2.gameObject.GetComponent<AI>().SetStartCount(false);
+            }
         }
         else
         {
@@ -112,6 +117,10 @@ public class GameManager : MonoBehaviour
                 p2.gameObject.GetComponent<AI>().SetIsHit(true);
             }
             p2ScoreText.text = p1Score.ToString();
+            if (p2.gameObject.GetComponent<AI>() != null)
+            {
+                p2.gameObject.GetComponent<AI>().SetStartCount(false);
+            }
         }
         CheckWinCondition();
         if(winResult != null) EndGame();

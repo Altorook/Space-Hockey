@@ -21,16 +21,19 @@ public class AI : MonoBehaviour
     private Vector2 startPos;
     private Vector2 target;
     private int puckCheck;
+    private float cooldown;
+    private bool startCount;
 
     private void Awake()
     {
-        
+        startCount = false;
     }
     // Start is called before the first frame update
     void Start()
     {
         ChangeDirection();
         InvokeRepeating("ChangeDirection", 0.5f, 0.5f);
+        cooldown = 5;
 
         Debug.Log(canShoot);
     }
@@ -41,11 +44,22 @@ public class AI : MonoBehaviour
         if (puckPos.transform.gameObject.activeSelf == false) ChaseBall();
         else if (puckPos.transform.gameObject.activeSelf == true) ShootBall();
         else return;
+
+        if(startCount == true)
+        {
+            cooldown -= Time.deltaTime;
+        }
+        else
+        {
+            cooldown = 5;
+        }
+        Debug.Log(cooldown);
     }
 
     private void ChaseBall()
     {
-        if(puck.position.y > netPos.position.y && puck.gameObject.activeSelf == true && isHit == false)
+        if (puck.position.y > netPos.position.y && puck.gameObject.activeSelf == true ||
+            cooldown <= 0)
         {
             speed = Random.Range(2f, 5f);
             Vector2 targetPosition = puck.position;
@@ -93,6 +107,7 @@ public class AI : MonoBehaviour
         puck.GetComponent<Collider2D>().enabled = true;
         canShoot = false;
         isHit = false;
+        startCount = true;
         transform.position = Vector2.MoveTowards(transform.position, new Vector2(targetPosition.x, 4.27f), speed * Time.deltaTime);
     }
 
@@ -109,6 +124,7 @@ public class AI : MonoBehaviour
     {
         if(collision.gameObject.GetComponent<Puck>())
         {
+            cooldown = 5;
             if (puck.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude <= 3) KeepBall();
             else
             {
@@ -140,5 +156,10 @@ public class AI : MonoBehaviour
     public int SetPuckCheck(int value)
     {
         return puckCheck = value;
+    }
+
+    public bool SetStartCount(bool value)
+    {
+        return startCount = value;
     }
 }
