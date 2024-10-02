@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         randomPlayer = Random.Range(1, 3);
+        if (randomPlayer == 1) p2.gameObject.GetComponent<AI>().SetPuckCheck(1);
         Debug.Log(randomPlayer);
         InitializedGame();
 
@@ -63,6 +64,7 @@ public class GameManager : MonoBehaviour
         }
             
         Invoke("RandomPlayer", 3);
+        p2.gameObject.GetComponent<AI>().SetPuckCheck(0);
     }
 
     private void RandomPlayer()

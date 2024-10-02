@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour
             {
                 puck.gameObject.SetActive(false);
                 puckPos.gameObject.SetActive(true);
+                puck.GetComponent<Collider2D>().enabled = false;
                 canShoot = true;
             }
             else
@@ -89,6 +90,7 @@ public class PlayerController : MonoBehaviour
             puck.ResetPosition(puckPos);
             puck.gameObject.SetActive(true);
             puck.gameObject.GetComponent<Rigidbody2D>().velocity = puckPos.up * puckSpeed;
+            puck.gameObject.GetComponent<Collider2D>().enabled = true;
             speed = 5;
             canShoot = false;
             speedBar.transform.GetChild(0).gameObject.SetActive(false);
