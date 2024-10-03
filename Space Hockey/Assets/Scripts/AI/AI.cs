@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AI : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class AI : MonoBehaviour
     [SerializeField] private Transform netPos;
     [SerializeField] private float speed;
     [SerializeField] private Transform goalPos;
+    [SerializeField] private Sprite[] team;
+    [SerializeField] private SOPlayers soPlayers;
+
+    private int currentTeam = 0;
 
     private bool canShoot;
     private bool isHit;
@@ -34,10 +39,21 @@ public class AI : MonoBehaviour
         ChangeDirection();
         InvokeRepeating("ChangeDirection", 0.5f, 0.5f);
         cooldown = 5;
-
+        if (currentTeam == soPlayers.p1Team)
+        {
+            SetCurrentTeam();
+        }
+        GetComponent<SpriteRenderer>().sprite = team[currentTeam];
         Debug.Log(canShoot);
     }
-        
+    private void OnEnable()
+    {
+        if (currentTeam == soPlayers.p1Team)
+        {
+            SetCurrentTeam();
+        }
+        GetComponent<SpriteRenderer>().sprite = team[currentTeam];
+    }
 
     void Update()
     {
@@ -103,7 +119,7 @@ public class AI : MonoBehaviour
         puckPos.gameObject.SetActive(false);
         puck.transform.gameObject.GetComponent<Puck>().ResetPosition(puckPos);
         puck.gameObject.SetActive(true);
-        puck.gameObject.GetComponent<Rigidbody2D>().velocity = puckPos.up * speed;
+        puck.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-1f, 1f), puckPos.up.y).normalized * speed;
         puck.GetComponent<Collider2D>().enabled = true;
         canShoot = false;
         isHit = false;
@@ -161,5 +177,14 @@ public class AI : MonoBehaviour
     public bool SetStartCount(bool value)
     {
         return startCount = value;
+    }
+
+    public void SetCurrentTeam()
+    {
+        currentTeam++;
+        if(currentTeam == soPlayers.p1Team)
+        {
+            currentTeam++;
+        }
     }
 }

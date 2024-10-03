@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private Sprite[] teamSelect;
+    [SerializeField] private SOPlayers soPlayers;
     [Header("---Puck---")]
     [SerializeField] private Puck puck;
     [SerializeField] private Transform puckPos;

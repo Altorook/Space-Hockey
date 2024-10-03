@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     [Header("---Puck---")]
     [SerializeField] private Puck puck;
+    [SerializeField] private GameObject arena;
 
     [Header("---Player---")]
     [SerializeField] private GameObject p1;
@@ -22,6 +23,9 @@ public class GameManager : MonoBehaviour
     private int randomPlayer;
     private GameObject playerPuck;
     private string winResult;
+    private int currentLevel;
+    private Transform p1StartPoint;
+    private Transform p2StartPoint;
 
     private void Awake()
     {
@@ -39,6 +43,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        p1StartPoint = p1.gameObject.transform;
+        p2StartPoint = p2.gameObject.transform;
         randomPlayer = Random.Range(1, 3);
         if (randomPlayer == 1) p2.gameObject.GetComponent<AI>().SetPuckCheck(1);
         Debug.Log(randomPlayer);
@@ -47,6 +53,7 @@ public class GameManager : MonoBehaviour
         p1ScoreText.text = p1Score.ToString();
         p2ScoreText.text = p1Score.ToString();
         gameResultText.gameObject.SetActive(false);
+        currentLevel = 1;
     }
 
     // Update is called once per frame
@@ -149,9 +156,49 @@ public class GameManager : MonoBehaviour
         p2.SetActive(false);
         p1ScoreText.gameObject.SetActive(false);
         p2ScoreText.gameObject.SetActive(false);
-        GameObject.Find("Arena").SetActive(false);
+        arena.gameObject.SetActive(false);
         gameResultText.text = $"{winResult} Win";
         gameResultText.gameObject.SetActive(true);
         Debug.Log(winResult);
+        StartCoroutine(GameSet());
+    }
+
+    private IEnumerator GameSet()
+    {
+        if(p2.gameObject.GetComponent<PlayerController>() == null)
+        {
+            if(winResult == "Player 1")
+            {
+                p1.transform.position = p1StartPoint.position;
+                p2.transform.position = p2StartPoint.position;
+                p1.SetActive(true);
+                p2.SetActive(true);
+                p1ScoreText.gameObject.SetActive(true);
+                p2ScoreText.gameObject.SetActive(true);
+                arena.gameObject.SetActive(true);
+                gameResultText.gameObject.SetActive(false);
+                p1Score = 0;
+                p2Score = 0;
+                currentLevel += 1;
+                if(currentLevel >= 4)
+                {
+                    //Go back to main menu
+                }
+                p2.GetComponent<AI>().SetCurrentTeam();
+                winResult = "";
+            }
+            else
+            {
+                //Go back to main menu
+            }
+        }
+        if (p2.gameObject.GetComponent<PlayerController>() != null)
+        {
+            if(winResult == "Player 1" || winResult == "Player 2")
+            {
+                //Go back to main menu
+            }
+        }
+        yield return new WaitForSeconds(3);
     }
 }

@@ -869,6 +869,12 @@ MonoBehaviour:
   netPos: {fileID: 479094241}
   speed: 5
   goalPos: {fileID: 1386692834}
+  team:
+  - {fileID: -6959593247290427401, guid: 81b8fb5145fefc249bdb917a375adc98, type: 3}
+  - {fileID: -5547819667858100000, guid: 9543b9d15ed85f2459551d2a82df745f, type: 3}
+  - {fileID: -5560522960131002910, guid: 60d1f4f2c230a4149a87b704c1540c2c, type: 3}
+  - {fileID: -4354831797969697864, guid: 4fc0b2498b08c134583b242e0deb3d91, type: 3}
+  soPlayers: {fileID: 11400000, guid: 4e556abfc71a8eb4eadd0126aa098461, type: 2}
   distance: 0
   randomSide: 0
 --- !u!1 &479094238
@@ -1099,6 +1105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   puck: {fileID: 1539106249}
+  arena: {fileID: 1286672140}
   p1: {fileID: 311198873}
   p2: {fileID: 327947509}
   p1Score: 0
@@ -2103,6 +2110,26 @@ PrefabInstance:
       propertyPath: speedIncrease
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 6725134096395924271, guid: f3e7777ba08754d40b9fb7c8ee413888, type: 3}
+      propertyPath: teamSelect.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6725134096395924271, guid: f3e7777ba08754d40b9fb7c8ee413888, type: 3}
+      propertyPath: teamSelect.Array.data[0]
+      value: 
+      objectReference: {fileID: -6959593247290427401, guid: 81b8fb5145fefc249bdb917a375adc98, type: 3}
+    - target: {fileID: 6725134096395924271, guid: f3e7777ba08754d40b9fb7c8ee413888, type: 3}
+      propertyPath: teamSelect.Array.data[1]
+      value: 
+      objectReference: {fileID: -5547819667858100000, guid: 9543b9d15ed85f2459551d2a82df745f, type: 3}
+    - target: {fileID: 6725134096395924271, guid: f3e7777ba08754d40b9fb7c8ee413888, type: 3}
+      propertyPath: teamSelect.Array.data[2]
+      value: 
+      objectReference: {fileID: -5560522960131002910, guid: 60d1f4f2c230a4149a87b704c1540c2c, type: 3}
+    - target: {fileID: 6725134096395924271, guid: f3e7777ba08754d40b9fb7c8ee413888, type: 3}
+      propertyPath: teamSelect.Array.data[3]
+      value: 
+      objectReference: {fileID: -4354831797969697864, guid: 4fc0b2498b08c134583b242e0deb3d91, type: 3}
     - target: {fileID: 7160540566168591483, guid: f3e7777ba08754d40b9fb7c8ee413888, type: 3}
       propertyPath: m_Mass
       value: 2
@@ -2248,7 +2275,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 4.92, z: 0.03993024}
-  m_LocalScale: {x: -0.175, y: 1.82, z: 1}
+  m_LocalScale: {x: 12.5, y: 1.82, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2670,6 +2697,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6725134096395924271, guid: f3e7777ba08754d40b9fb7c8ee413888, type: 3}
+      propertyPath: soPlayers
+      value: 
+      objectReference: {fileID: 11400000, guid: 4e556abfc71a8eb4eadd0126aa098461, type: 2}
+    - target: {fileID: 6725134096395924271, guid: f3e7777ba08754d40b9fb7c8ee413888, type: 3}
       propertyPath: playerName
       value: AI
       objectReference: {fileID: 0}
@@ -2677,6 +2708,26 @@ PrefabInstance:
       propertyPath: speedIncrease
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 6725134096395924271, guid: f3e7777ba08754d40b9fb7c8ee413888, type: 3}
+      propertyPath: teamSelect.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6725134096395924271, guid: f3e7777ba08754d40b9fb7c8ee413888, type: 3}
+      propertyPath: teamSelect.Array.data[0]
+      value: 
+      objectReference: {fileID: -6959593247290427401, guid: 81b8fb5145fefc249bdb917a375adc98, type: 3}
+    - target: {fileID: 6725134096395924271, guid: f3e7777ba08754d40b9fb7c8ee413888, type: 3}
+      propertyPath: teamSelect.Array.data[1]
+      value: 
+      objectReference: {fileID: -5547819667858100000, guid: 9543b9d15ed85f2459551d2a82df745f, type: 3}
+    - target: {fileID: 6725134096395924271, guid: f3e7777ba08754d40b9fb7c8ee413888, type: 3}
+      propertyPath: teamSelect.Array.data[2]
+      value: 
+      objectReference: {fileID: -5560522960131002910, guid: 60d1f4f2c230a4149a87b704c1540c2c, type: 3}
+    - target: {fileID: 6725134096395924271, guid: f3e7777ba08754d40b9fb7c8ee413888, type: 3}
+      propertyPath: teamSelect.Array.data[3]
+      value: 
+      objectReference: {fileID: -4354831797969697864, guid: 4fc0b2498b08c134583b242e0deb3d91, type: 3}
     - target: {fileID: 7160540566168591483, guid: f3e7777ba08754d40b9fb7c8ee413888, type: 3}
       propertyPath: m_Constraints
       value: 4
