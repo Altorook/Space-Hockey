@@ -14,6 +14,7 @@ public class PlayerInputManager : MonoBehaviour
     private void Awake()
     {
         _playerController = GetComponent<PlayerController>();
+        
     }
 
     private void OnEnable()
