@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private Sprite[] teamSelect;
+    [SerializeField] private Sprite[] team;
     [SerializeField] private SOPlayers soPlayers;
     [Header("---Puck---")]
     [SerializeField] private Puck puck;
@@ -41,6 +41,12 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         speedBar.transform.GetChild(0).gameObject.SetActive(false);
+        if(playerName == "Player1")
+        GetComponent<SpriteRenderer>().sprite = team[soPlayers.p1Team];
+        else
+        {
+            GetComponent<SpriteRenderer>().sprite = team[soPlayers.p2Team];
+        }
     }
 
     // Update is called once per frame

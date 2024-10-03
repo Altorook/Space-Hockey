@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,12 +21,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text p2ScoreText;
     [SerializeField] private TMP_Text gameResultText;
 
+    [Header("---Obstacles---")]
+    [SerializeField] private GameObject[] obstacles;
+
     private int randomPlayer;
     private GameObject playerPuck;
     private string winResult;
     private int currentLevel;
-    private Transform p1StartPoint;
-    private Transform p2StartPoint;
+    private Vector2 p1StartPoint;
+    private Vector2 p2StartPoint;
+    private int obstacleCount;
 
     private void Awake()
     {
@@ -43,11 +48,8 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        p1StartPoint = p1.gameObject.transform;
-        p2StartPoint = p2.gameObject.transform;
-        randomPlayer = Random.Range(1, 3);
-        if (randomPlayer == 1) p2.gameObject.GetComponent<AI>().SetPuckCheck(1);
-        Debug.Log(randomPlayer);
+        p1StartPoint = p1.gameObject.transform.position;
+        p2StartPoint = p2.gameObject.transform.position;
         InitializedGame();
 
         p1ScoreText.text = p1Score.ToString();
@@ -59,17 +61,19 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     private void InitializedGame()
     {
+        randomPlayer = Random.Range(1, 3);
+        if (randomPlayer == 1) p2.gameObject.GetComponent<AI>().SetPuckCheck(1);
         if (p2.gameObject.GetComponent<AI>() != null)
         {
             p2.gameObject.GetComponent<AI>().SetCanShoot(false);
             p2.gameObject.GetComponent<AI>().SetIsHit(false);
         }
-            
+
         Invoke("RandomPlayer", 3);
         p2.gameObject.GetComponent<AI>().SetPuckCheck(0);
     }
@@ -98,39 +102,55 @@ public class GameManager : MonoBehaviour
 
     public void PlayerScored(string player)
     {
-        if(player == "Player1")
+        if (player == "Player1")
         {
             playerPuck = p1.transform.GetChild(0).gameObject;
             p2Score += 1;
-            puck.ResetPosition(playerPuck.transform);
-            Invoke("ActivePuck", 2);
-            p1.gameObject.GetComponent<PlayerController>().SetCanShoot(true);
             p1ScoreText.text = p2Score.ToString();
-            if (p2.gameObject.GetComponent<AI>() != null)
+            CheckWinCondition();
+            if (winResult != null)
             {
-                p2.gameObject.GetComponent<AI>().SetStartCount(false);
+                EndGame();
+            }
+            else
+            {
+                puck.ResetPosition(playerPuck.transform);
+                Invoke("ActivePuck", 2);
+                p1.gameObject.GetComponent<PlayerController>().SetCanShoot(true);
+                if (p2.gameObject.GetComponent<AI>() != null)
+                {
+                    p2.gameObject.GetComponent<AI>().SetStartCount(false);
+                }
             }
         }
         else
         {
             playerPuck = p2.transform.GetChild(0).gameObject;
             p1Score += 1;
-            puck.ResetPosition(playerPuck.transform);
-            Invoke("ActivePuck", 2);
-            if (p2.gameObject.GetComponent<PlayerController>() != null) p2.gameObject.GetComponent<PlayerController>().SetCanShoot(true);
+
+            p2ScoreText.text = p1Score.ToString();
+            CheckWinCondition();
+            if (winResult != null)
+            {
+                EndGame();
+            }
             else
             {
-                p2.gameObject.GetComponent<AI>().SetCanShoot(true);
-                p2.gameObject.GetComponent<AI>().SetIsHit(true);
+                puck.ResetPosition(playerPuck.transform);
+                Invoke("ActivePuck", 2);
+                if (p2.gameObject.GetComponent<PlayerController>() != null) p2.gameObject.GetComponent<PlayerController>().SetCanShoot(true);
+                else
+                {
+                    p2.gameObject.GetComponent<AI>().SetCanShoot(true);
+                    p2.gameObject.GetComponent<AI>().SetIsHit(true);
+                }
+                if (p2.gameObject.GetComponent<AI>() != null)
+                {
+                    p2.gameObject.GetComponent<AI>().SetStartCount(false);
+                }
             }
-            p2ScoreText.text = p1Score.ToString();
-            if (p2.gameObject.GetComponent<AI>() != null)
-            {
-                p2.gameObject.GetComponent<AI>().SetStartCount(false);
-            }
+            
         }
-        CheckWinCondition();
-        if(winResult != null) EndGame();
     }
 
     private void ActivePuck()
@@ -152,6 +172,7 @@ public class GameManager : MonoBehaviour
 
     private void EndGame()
     {
+        puck.gameObject.SetActive(false);
         p1.SetActive(false);
         p2.SetActive(false);
         p1ScoreText.gameObject.SetActive(false);
@@ -159,46 +180,77 @@ public class GameManager : MonoBehaviour
         arena.gameObject.SetActive(false);
         gameResultText.text = $"{winResult} Win";
         gameResultText.gameObject.SetActive(true);
+        HideObstacle();
         Debug.Log(winResult);
         StartCoroutine(GameSet());
     }
 
     private IEnumerator GameSet()
     {
-        if(p2.gameObject.GetComponent<PlayerController>() == null)
+        yield return new WaitForSeconds(3);
+        if (p2.gameObject.GetComponent<PlayerController>() == null)
         {
             if(winResult == "Player 1")
             {
-                p1.transform.position = p1StartPoint.position;
-                p2.transform.position = p2StartPoint.position;
-                p1.SetActive(true);
-                p2.SetActive(true);
-                p1ScoreText.gameObject.SetActive(true);
-                p2ScoreText.gameObject.SetActive(true);
-                arena.gameObject.SetActive(true);
-                gameResultText.gameObject.SetActive(false);
-                p1Score = 0;
-                p2Score = 0;
-                currentLevel += 1;
-                if(currentLevel >= 4)
+                currentLevel++;
+                if (currentLevel >= 4)
                 {
-                    //Go back to main menu
+                    //Script to Go back to main menu
+                    SceneManager.LoadScene("SampleScene");
                 }
+                else
+                {
+                    p1.transform.position = p1StartPoint;
+                    p2.transform.position = p2StartPoint;
+                    p1.SetActive(true);
+                    p2.SetActive(true);
+                    p1ScoreText.gameObject.SetActive(true);
+                    p2ScoreText.gameObject.SetActive(true);
+                    arena.gameObject.SetActive(true);
+                    gameResultText.gameObject.SetActive(false);
+                    p1Score = 0;
+                    p1ScoreText.text = p2Score.ToString();
+                    p2Score = 0;
+                    p2ScoreText.text = p1Score.ToString();
+
+                    if (currentLevel == 2)
+                    {
+                        obstacles[obstacleCount].gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        obstacles[obstacleCount].gameObject.SetActive(false);
+                        obstacleCount++;
+                        obstacles[obstacleCount].gameObject.SetActive(true);
+                    }
+                    InitializedGame();
+                }
+                
+                
                 p2.GetComponent<AI>().SetCurrentTeam();
-                winResult = "";
+                winResult = null;
             }
             else
             {
-                //Go back to main menu
+                //Script to Go back to main menu
+                SceneManager.LoadScene("SampleScene");
             }
         }
         if (p2.gameObject.GetComponent<PlayerController>() != null)
         {
             if(winResult == "Player 1" || winResult == "Player 2")
             {
-                //Go back to main menu
+                //Script to Go back to main menu
+                SceneManager.LoadScene("SampleScene");
             }
         }
-        yield return new WaitForSeconds(3);
+    }
+
+    private void HideObstacle()
+    {
+        foreach(var obstacle in obstacles)
+        {
+            obstacle.gameObject.SetActive(false);
+        }
     }
 }

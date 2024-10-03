@@ -178,6 +178,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f441205b4f51aa84f98d1e2a135f641b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  team:
+  - {fileID: -6959593247290427401, guid: 81b8fb5145fefc249bdb917a375adc98, type: 3}
+  - {fileID: -5547819667858100000, guid: 9543b9d15ed85f2459551d2a82df745f, type: 3}
+  - {fileID: -5560522960131002910, guid: 60d1f4f2c230a4149a87b704c1540c2c, type: 3}
+  - {fileID: -4354831797969697864, guid: 4fc0b2498b08c134583b242e0deb3d91, type: 3}
+  soPlayers: {fileID: 11400000, guid: 4e556abfc71a8eb4eadd0126aa098461, type: 2}
   puck: {fileID: 0}
   puckPos: {fileID: 663238783225996327}
   playerName: 

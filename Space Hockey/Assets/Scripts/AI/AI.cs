@@ -44,15 +44,6 @@ public class AI : MonoBehaviour
             SetCurrentTeam();
         }
         GetComponent<SpriteRenderer>().sprite = team[currentTeam];
-        Debug.Log(canShoot);
-    }
-    private void OnEnable()
-    {
-        if (currentTeam == soPlayers.p1Team)
-        {
-            SetCurrentTeam();
-        }
-        GetComponent<SpriteRenderer>().sprite = team[currentTeam];
     }
 
     void Update()
@@ -69,7 +60,6 @@ public class AI : MonoBehaviour
         {
             cooldown = 5;
         }
-        Debug.Log(cooldown);
     }
 
     private void ChaseBall()
@@ -77,31 +67,31 @@ public class AI : MonoBehaviour
         if (puck.position.y > netPos.position.y && puck.gameObject.activeSelf == true ||
             cooldown <= 0)
         {
-            speed = Random.Range(2f, 5f);
+            speed = Random.Range(3f, 6f);
             Vector2 targetPosition = puck.position;
             transform.position = Vector2.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
         }
         else if (puck.position.y > netPos.position.y && puck.gameObject.activeSelf == true && isHit == true ||
                  puck.position.y < netPos.position.y && puck.gameObject.activeSelf == true)
         {
-            Vector2 targetPosition = new Vector2(puck.position.x, Random.Range(goalPos.position.y - 0.3f, goalPos.position.y - 1f));
+            Vector2 targetPosition = new Vector2(puck.position.x, Random.Range(goalPos.position.y - 1f, goalPos.position.y - 1.5f));
             float interceptPosX = Mathf.Clamp(targetPosition.x, goalPos.position.x - 1f, goalPos.position.x + 1f);
             Vector2 interceptPos = new Vector2(interceptPosX, targetPosition.y);
-            speed = Random.Range(2f, 5f);
+            speed = Random.Range(3f, 6f);
             transform.position = Vector2.MoveTowards(transform.position, interceptPos, speed * Time.deltaTime);
         }
         else if (puck.gameObject.activeSelf == false && puckPos.gameObject.activeSelf == false && canShoot == false && puckCheck == 1 ||
                  p1.transform.GetChild(0).gameObject.activeSelf == true)
         {
-            Vector2 targetPosition = new Vector2(p1.position.x, Random.Range(goalPos.position.y - 0.3f, goalPos.position.y - 1f));
+            Vector2 targetPosition = new Vector2(p1.position.x, Random.Range(goalPos.position.y - 1f, goalPos.position.y - 1.5f));
             float interceptPosX = Mathf.Clamp(targetPosition.x, goalPos.position.x - 1f, goalPos.position.x + 1f);
             Vector2 interceptPos = new Vector2(interceptPosX, targetPosition.y);
-            speed = Random.Range(2f, 5f);
+            speed = Random.Range(3f, 6f);
             transform.position = Vector2.MoveTowards(transform.position, interceptPos, speed * Time.deltaTime);
         }
         else
         {
-            speed = Random.Range(2f, 5f);
+            speed = Random.Range(3f, 6f);
             transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
         }
 
@@ -186,5 +176,10 @@ public class AI : MonoBehaviour
         {
             currentTeam++;
         }
+
+        if (currentTeam > 3) currentTeam = 0;
+
+
+        GetComponent<SpriteRenderer>().sprite = team[currentTeam];
     }
 }
