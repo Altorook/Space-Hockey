@@ -66,7 +66,7 @@ public class OnePlayerTeamSelect : MonoBehaviour
         {
             savePlayers.p1Team = p1ActiveTeam;
             inputControl.DisableMenuCtrl();
-            SceneManager.LoadScene("ScriptTesting");
+            SceneManager.LoadScene("OnePlayerPlay");
         }
     }
 }
