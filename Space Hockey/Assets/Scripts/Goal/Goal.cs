@@ -7,7 +7,6 @@ public class Goal : MonoBehaviour
     [SerializeField] private string playerGoal;
 
     private GameManager gm;
-
     private void Awake()
     {
         gm = GameObject.Find("[GameManager]").GetComponent<GameManager>();
