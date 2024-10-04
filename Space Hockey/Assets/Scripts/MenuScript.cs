@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class MenuScript : MonoBehaviour
     [SerializeField]
     GameObject[] p2Teams = new GameObject[4];
     [SerializeField]
-    GameObject[] menuIndicators = new GameObject[3];    
+    GameObject[] menuIndicators = new GameObject[3];
+    [SerializeField]
+    MenuInput menuInput;
     int p1ActiveTeam = 0;
     int p2ActiveTeam = 1;
     int partOfMenu = 1;
@@ -91,6 +94,8 @@ public class MenuScript : MonoBehaviour
         {
             savePlayers.p1Team = p1ActiveTeam;
             savePlayers.p2Team = p2ActiveTeam;
+            menuInput.DisableMenuCtrl();
+            SceneManager.LoadScene("TwoPlayerPlay");
         }
     }
 }

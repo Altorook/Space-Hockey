@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     [Header("---Player---")]
     [SerializeField] private GameObject p1;
     [SerializeField] private GameObject p2;
+    [SerializeField] private AI aiScript;
 
     [Header("---Score---")]
     [SerializeField] private int p1Score;
@@ -209,9 +210,9 @@ public class GameManager : MonoBehaviour
                     arena.gameObject.SetActive(true);
                     gameResultText.gameObject.SetActive(false);
                     p1Score = 0;
-                    p1ScoreText.text = p2Score.ToString();
+                    p1ScoreText.text = p1Score.ToString();
                     p2Score = 0;
-                    p2ScoreText.text = p1Score.ToString();
+                    p2ScoreText.text = p2Score.ToString();
 
                     if (currentLevel == 2)
                     {

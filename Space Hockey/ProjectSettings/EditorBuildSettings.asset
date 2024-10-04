@@ -6,6 +6,21 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/ScriptTesting.unity
+    guid: 266917a585d94cf43adc88ba426e2d94
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 1
+    path: Assets/Scenes/Start.unity
+    guid: 8a8ed5915df4c624da06a01b0f5e105d
+  - enabled: 1
+    path: Assets/Scenes/SinglePlayerTeamSelect.unity
+    guid: ac6eb8a6ab1d2af46b71b66ff723a24b
+  - enabled: 1
+    path: Assets/Scenes/2PlayerTeamSelect.unity
+    guid: 12f1c2fdc8e102841ac4dc50881e40a5
+  - enabled: 1
+    path: Assets/Scenes/TwoPlayerPlay.unity
+    guid: e26a2a2804366d849bb7e71c2d76ed01
   m_configObjects: {}

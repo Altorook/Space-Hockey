@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerTeams
   m_EditorClassIdentifier: 
   p1Team: 0
-  p2Team: 0
+  p2Team: 3
