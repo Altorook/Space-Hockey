@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     [Header("---Obstacles---")]
     [SerializeField] private GameObject[] obstacles;
 
+
+    [SerializeField] private AudioSource musicSource;
+
     private int randomPlayer;
     private GameObject playerPuck;
     private string winResult;
@@ -35,7 +38,8 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if(p2.gameObject.GetComponent<PlayerController>().GetPlayerName() == "AI")
+       
+        if (p2.gameObject.GetComponent<PlayerController>().GetPlayerName() == "AI")
         {
             Destroy(p2.gameObject.GetComponent<PlayerController>());
             Destroy(p2.gameObject.GetComponent<PlayerInputManager>());
@@ -49,6 +53,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SoundManager.Instance.PlayMusic("Charge");
         p1StartPoint = p1.gameObject.transform.position;
         p2StartPoint = p2.gameObject.transform.position;
         InitializedGame();
@@ -57,6 +62,7 @@ public class GameManager : MonoBehaviour
         p2ScoreText.text = p1Score.ToString();
         gameResultText.gameObject.SetActive(false);
         currentLevel = 1;
+
     }
 
     // Update is called once per frame
@@ -100,9 +106,20 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
+    IEnumerator WaitToPlay()
+    {
+        SoundManager.Instance.StopMusic();
+        SoundManager.Instance.PlaySFX("Buzzer");
+        yield return new WaitForSeconds(6);
+        if (musicSource.isPlaying == false)
+        {
+            SoundManager.Instance.PlayMusic("Charge");
+        }
+        
+    }
     public void PlayerScored(string player)
     {
+        StartCoroutine(WaitToPlay());
         if (player == "Player1")
         {
             playerPuck = p1.transform.GetChild(0).gameObject;
@@ -197,7 +214,7 @@ public class GameManager : MonoBehaviour
                 if (currentLevel >= 4)
                 {
                     //Script to Go back to main menu
-                    SceneManager.LoadScene("SampleScene");
+                    SceneManager.LoadScene("Start");
                 }
                 else
                 {
@@ -234,7 +251,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 //Script to Go back to main menu
-                SceneManager.LoadScene("SampleScene");
+                SceneManager.LoadScene("Start");
             }
         }
         if (p2.gameObject.GetComponent<PlayerController>() != null)
@@ -242,7 +259,7 @@ public class GameManager : MonoBehaviour
             if(winResult == "Player 1" || winResult == "Player 2")
             {
                 //Script to Go back to main menu
-                SceneManager.LoadScene("SampleScene");
+                SceneManager.LoadScene("Start");
             }
         }
     }
