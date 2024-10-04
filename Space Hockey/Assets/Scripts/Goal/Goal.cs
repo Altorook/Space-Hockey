@@ -28,7 +28,8 @@ public class Goal : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<Puck>())
         {
-            if(playerGoal == "Player1")
+            SoundManager.Instance.PlaySFX("Buzzer");
+            if (playerGoal == "Player1")
             {
                 gm.PlayerScored(playerGoal);
             }
